@@ -1,3 +1,3 @@
 #!/bin/sh
 
-/solution/target/release/app "$@" || echo "run error code: $?"
+python app/main.py "$@" || echo "run error code: $?"
