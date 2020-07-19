@@ -13,7 +13,8 @@ async fn main() {
     let _game_response = send(server_url, make_join_request(player_key)).await;
     let _game_response = send(server_url, make_start_request(player_key)).await;
     loop {
-        let _game_response = send(server_url, make_commands_request(player_key)).await;
+        let _game_response = send(server_url, make_commands_request(player_key, 1)).await;
+        let _game_response = send(server_url, make_commands_request(player_key, 0)).await;
     }
 }
 
@@ -25,8 +26,8 @@ fn make_start_request(player_key: &str) -> String {
     format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(")"), mod_str(")"))
 }
 
-fn make_commands_request(player_key: &str) -> String {
-    format!("(4, {}, (1, 0))", player_key)
+fn make_commands_request(player_key: &str, ship_id: i64) -> String {
+    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(0), mod_str(","), mod_int(ship_id), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(")"),mod_str(")"),mod_str(")"))
 }
 
 
