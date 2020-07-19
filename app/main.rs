@@ -10,7 +10,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let server_url = &args[1];
     let player_key = &args[2];
 
-    println!("ServerUrl: {}; PlayerKey: {}", server_url, player_key);
+    println!(
+        "ServerUrl: {}; PlayerKey: {}",
+        server_url.to_owned() + "/aliens/send",
+        player_key
+    );
     send(server_url, format!("{}", player_key)).await
 }
 
