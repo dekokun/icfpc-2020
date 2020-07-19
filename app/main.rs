@@ -12,10 +12,10 @@ async fn main() {
     let player_key = &args[2];
 
     let mut rng = rand::thread_rng();
-    let x0: i64 = rng.gen::<i64>() % 4 + 1;
-    let x1: i64 = rng.gen::<i64>() % 4 + 1;
-    let x2: i64 = rng.gen::<i64>() % 4 + 1;
-    let x3: i64 = rng.gen::<i64>() % 4 + 1;
+    let x0: i64 = 442;
+    let x1: i64 = 1;
+    let x2: i64 = 0;
+    let x3: i64 = 1;
     let _game_response = send(server_url, make_join_request(player_key)).await;
     let _game_response = send(server_url, make_start_request(player_key, x0, x1, x2, x3)).await;
     loop {
@@ -67,6 +67,37 @@ fn mod_int(i: i64) -> String {
            | term "," term
  */
 fn mod_str(s: &str) -> &str {
+    let nil = "".to_owned();
+    let ret = "".to_owned();
+    let num = "".to_owned();
+    for c in s.chars() {
+        match c {
+            '(' => ret += "11",
+            ')' => ret += "00",
+            ',' => ret += "11",
+            'n' => if nil != "" {
+                panic!();
+            } else {
+                nil = "n".to_owned();
+            },
+            'i' => if nil != "n" {
+                panic!();
+            } else {
+                nil = "ni".to_owned();
+            },
+            'l' => if nil != "ni" {
+                panic!();
+            } else {
+                ret += "00";
+                nil = "".to_owned();
+            },
+            '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0' => {
+                num += c;
+            }
+
+
+        }
+    }
     match s {
         "(" => "11",
         ")" => "00",
