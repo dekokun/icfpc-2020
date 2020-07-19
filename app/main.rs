@@ -67,37 +67,37 @@ fn mod_int(i: i64) -> String {
            | term "," term
  */
 fn mod_str(s: &str) -> &str {
-    let nil = "".to_owned();
-    let ret = "".to_owned();
-    let num = "".to_owned();
-    for c in s.chars() {
-        match c {
-            '(' => ret += "11",
-            ')' => ret += "00",
-            ',' => ret += "11",
-            'n' => if nil != "" {
-                panic!();
-            } else {
-                nil = "n".to_owned();
-            },
-            'i' => if nil != "n" {
-                panic!();
-            } else {
-                nil = "ni".to_owned();
-            },
-            'l' => if nil != "ni" {
-                panic!();
-            } else {
-                ret += "00";
-                nil = "".to_owned();
-            },
-            '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0' => {
-                num += c;
-            }
+    // let nil = "".to_owned();
+    // let ret = "".to_owned();
+    // let num = "".to_owned();
+    // for c in s.chars() {
+    //     match c {
+    //         '(' => ret += "11",
+    //         ')' => ret += "00",
+    //         ',' => ret += "11",
+    //         'n' => if nil != "" {
+    //             panic!();
+    //         } else {
+    //             nil = "n".to_owned();
+    //         },
+    //         'i' => if nil != "n" {
+    //             panic!();
+    //         } else {
+    //             nil = "ni".to_owned();
+    //         },
+    //         'l' => if nil != "ni" {
+    //             panic!();
+    //         } else {
+    //             ret += "00";
+    //             nil = "".to_owned();
+    //         },
+    //         '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0' => {
+    //             num += c;
+    //         }
 
 
-        }
-    }
+    //     }
+    // }
     match s {
         "(" => "11",
         ")" => "00",
