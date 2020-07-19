@@ -7,7 +7,7 @@ use std::process;
 async fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let server_url = &args[1];
+    let server_url = &((&args[1]).to_owned() + "/aliens/send");
     let player_key = &args[2];
 
     println!(
