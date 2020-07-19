@@ -54,6 +54,11 @@ fn mod_int(i: i64) -> String {
     return prefix.to_owned() + &pad + "0" + &pad2 + &num
 }
 
+/**
+ * term    = num
+           | "(" term ")"
+           | term "," term
+ */
 fn mod_str(s: &str) -> &str {
     match s {
         "(" => "11",
