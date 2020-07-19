@@ -10,11 +10,6 @@ async fn main() {
     let server_url = &((&args[1]).to_owned() + "/aliens/send");
     let player_key = &args[2];
 
-    println!(
-        "ServerUrl: {}; PlayerKey: {}",
-        server_url,
-        player_key
-    );
     let _game_response = send(server_url, make_join_request(player_key)).await;
     let _game_response = send(server_url, make_start_request(player_key)).await;
     loop {
@@ -38,6 +33,7 @@ async fn send(
     body: String,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let client = Client::new();
+    println!("server_url: {}, body: {}", server_url, body);
     let req = Request::builder()
         .method(Method::POST)
         .header("Content-Type", "text/plain")
