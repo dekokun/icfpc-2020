@@ -12,10 +12,10 @@ async fn main() {
     let player_key = &args[2];
 
     let mut rng = rand::thread_rng();
-    let x0: i64 = rng.gen::<i64>() % 10 + 1;
-    let x1: i64 = rng.gen::<i64>() % 10 + 1;
-    let x2: i64 = rng.gen::<i64>() % 10 + 1;
-    let x3: i64 = rng.gen::<i64>() % 10 + 1;
+    let x0: i64 = rng.gen::<i64>() % 4 + 1;
+    let x1: i64 = rng.gen::<i64>() % 4 + 1;
+    let x2: i64 = rng.gen::<i64>() % 4 + 1;
+    let x3: i64 = rng.gen::<i64>() % 4 + 1;
     let _game_response = send(server_url, make_join_request(player_key)).await;
     let _game_response = send(server_url, make_start_request(player_key, x0, x1, x2, x3)).await;
     loop {
