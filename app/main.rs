@@ -18,16 +18,52 @@ async fn main() {
 }
 
 fn make_join_request(player_key: &str) -> String {
-    format!("(2, {}, nil)", player_key)
+    format!("{}{}{}{}{}{}{}", mod_str("("), mod_int(2), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("nil"), mod_str(")"))
 }
 
 fn make_start_request(player_key: &str) -> String {
-    format!("(3, {}, (0, 0, 0, 0))", player_key)
+    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(0), mod_str(","), mod_int(0), mod_str(","), mod_int(0), mod_str(","), mod_int(0), mod_str("("), mod_str("("))
 }
 
 fn make_commands_request(player_key: &str) -> String {
     format!("(4, {}, (1, 0))", player_key)
 }
+
+
+fn mod_int(i: i64) -> String {
+    if i == 0 {
+        return "010".to_owned()
+    }
+    let mut i = i;
+    let prefix = if i < 0 {
+        i = -i;
+        "10"
+    } else {
+        "01"
+    };
+    let num = format!("{num:b}", num = i);
+    let len = num.len();
+    let num_of_one = ((len - 1) / 4) + 1;
+    let pad = "1".repeat(num_of_one);
+    let pad2_length = if len % 4 == 0 {
+        0
+    } else {
+        4 - (len % 4)
+    };
+    let pad2 = "0".repeat( pad2_length );
+    return prefix.to_owned() + &pad + "0" + &pad2 + &num
+}
+
+fn mod_str(s: &str) -> &str {
+    match s {
+        "(" => "11",
+        ")" => "00",
+        "nil" => "00",
+        "," => "11",
+        _ => unreachable!(),
+    }
+}
+
 async fn send(
     server_url: &str,
     body: String,
@@ -71,4 +107,36 @@ async fn send(
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+#[allow(unused_imports)]
+mod tests {
+    #![allow(unused_imports)]
+    use super::*;
+
+    #[test]
+    fn test0() {
+        assert_eq!(mod_int(0), "010");
+    }
+    #[test]
+    fn test1() {
+        assert_eq!(mod_int(1), "01100001");
+    }
+    #[test]
+    fn test15() {
+        assert_eq!(mod_int(15), "01101111");
+    }
+    #[test]
+    fn testminus1() {
+        assert_eq!(mod_int(-1), "10100001");
+    }
+    #[test]
+    fn test2() {
+        assert_eq!(mod_int(2), "01100010");
+    }
+    #[test]
+    fn test256() {
+        assert_eq!(mod_int(256), "011110000100000000");
+    }
 }
