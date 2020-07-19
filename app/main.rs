@@ -4,7 +4,7 @@ use std::env;
 use std::process;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+async fn main() {
     let args: Vec<String> = env::args().collect();
 
     let server_url = &args[1];
@@ -15,9 +15,24 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         server_url.to_owned() + "/aliens/send",
         player_key
     );
-    send(server_url, format!("{}", player_key)).await
+    let _game_response = send(server_url, make_join_request(player_key)).await;
+    let _game_response = send(server_url, make_start_request(player_key)).await;
+    loop {
+        let _game_response = send(server_url, make_commands_request(player_key)).await;
+    }
 }
 
+fn make_join_request(player_key: &str) -> String {
+    format!("(2, {}, nil)", player_key)
+}
+
+fn make_start_request(player_key: &str) -> String {
+    format!("(3, {}, (0, 0, 0, 0))", player_key)
+}
+
+fn make_commands_request(player_key: &str) -> String {
+    format!("(4, {}, (1, 0))", player_key)
+}
 async fn send(
     server_url: &str,
     body: String,
