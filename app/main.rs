@@ -22,7 +22,7 @@ fn make_join_request(player_key: &str) -> String {
 }
 
 fn make_start_request(player_key: &str) -> String {
-    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(0), mod_str(","), mod_int(0), mod_str(","), mod_int(0), mod_str(","), mod_int(0), mod_str("("), mod_str("("))
+    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(")"), mod_str(")"))
 }
 
 fn make_commands_request(player_key: &str) -> String {
