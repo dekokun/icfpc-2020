@@ -151,4 +151,12 @@ mod tests {
     fn test256() {
         assert_eq!(mod_int(256), "011110000100000000");
     }
+    #[test]
+    fn start() {
+        assert_eq!(format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int("10000".parse().unwrap()), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(")"), mod_str(")")), "110110001111011111000100111000100001111011000011101100001110110000111011000010000")
+    }
+    #[test]
+    fn join() {
+        assert_eq!(format!("{}{}{}{}{}{}{}", mod_str("("), mod_int(2), mod_str(","), mod_int("10000".parse().unwrap()), mod_str(","), mod_str("nil"), mod_str(")")), "11011000101101111100010011100010000110000")
+    }
 }
