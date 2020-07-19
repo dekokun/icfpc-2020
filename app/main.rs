@@ -12,7 +12,7 @@ async fn main() {
 
     println!(
         "ServerUrl: {}; PlayerKey: {}",
-        server_url.to_owned() + "/aliens/send",
+        server_url,
         player_key
     );
     let _game_response = send(server_url, make_join_request(player_key)).await;
