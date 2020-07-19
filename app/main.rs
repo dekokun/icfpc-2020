@@ -40,6 +40,7 @@ async fn send(
     let client = Client::new();
     let req = Request::builder()
         .method(Method::POST)
+        .header("Content-Type", "text/plain")
         .uri(server_url)
         .body(Body::from(body))?;
 
