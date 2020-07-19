@@ -11,6 +11,8 @@ async fn main() {
     let server_url = &((&args[1]).to_owned() + "/aliens/send");
     let player_key = &args[2];
 
+    println!("server_url: {}", server_url);
+
     let mut rng = rand::thread_rng();
     let x0: i64 = 442;
     let x1: i64 = 1;
@@ -113,7 +115,7 @@ async fn send(
     body: String,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let client = Client::new();
-    println!("server_url: {}, body: {}", server_url, body);
+    println!("body: {}", body);
     let req = Request::builder()
         .method(Method::POST)
         .header("Content-Type", "text/plain")
