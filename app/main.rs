@@ -2,6 +2,7 @@ use http_body::Body as _;
 use hyper::{Body, Client, Method, Request, StatusCode};
 use std::env;
 use std::process;
+use rand::Rng;
 
 #[tokio::main]
 async fn main() {
@@ -10,8 +11,13 @@ async fn main() {
     let server_url = &((&args[1]).to_owned() + "/aliens/send");
     let player_key = &args[2];
 
+    let mut rng = rand::thread_rng();
+    let x0: i64 = rng.gen::<i64>() % 999 + 1;
+    let x1: i64 = rng.gen::<i64>() % 999 + 1;
+    let x2: i64 = rng.gen::<i64>() % 999 + 1;
+    let x3: i64 = rng.gen::<i64>() % 999 + 1;
     let _game_response = send(server_url, make_join_request(player_key)).await;
-    let _game_response = send(server_url, make_start_request(player_key)).await;
+    let _game_response = send(server_url, make_start_request(player_key, x0, x1, x2, x3)).await;
     loop {
         let _game_response = send(server_url, make_commands_request(player_key, 1)).await;
         let _game_response = send(server_url, make_commands_request(player_key, 0)).await;
@@ -22,8 +28,8 @@ fn make_join_request(player_key: &str) -> String {
     format!("{}{}{}{}{}{}{}", mod_str("("), mod_int(2), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("nil"), mod_str(")"))
 }
 
-fn make_start_request(player_key: &str) -> String {
-    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(")"), mod_str(")"))
+fn make_start_request(player_key: &str, x0: i64, x1: i64, x2: i64, x3: i64) -> String {
+    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(x0), mod_str(","), mod_int(x1), mod_str(","), mod_int(x2), mod_str(","), mod_int(x3), mod_str(")"), mod_str(")"))
 }
 
 fn make_commands_request(player_key: &str, ship_id: i64) -> String {
