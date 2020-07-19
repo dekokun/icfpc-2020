@@ -7,3 +7,6 @@ release:
 PHONY: build
 build:
 	./build.sh
+PHONY: test
+test:
+	cargo test
