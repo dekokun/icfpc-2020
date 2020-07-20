@@ -1,6 +1,6 @@
 use http_body::Body as _;
 use hyper::{Body, Client, Method, Request, StatusCode};
-use rand::Rng;
+// use rand::Rng;
 use std::env;
 use std::process;
 
@@ -13,7 +13,7 @@ async fn main() {
 
     println!("server_url: {}", server_url);
 
-    let mut rng = rand::thread_rng();
+    // let mut rng = rand::thread_rng();
     let x0: i64 = 442;
     let x1: i64 = 1;
     let x2: i64 = 0;
@@ -60,7 +60,7 @@ fn make_start_request(player_key: &str, x0: i64, x1: i64, x2: i64, x3: i64) -> S
     )
 }
 
-fn make_commands_request(player_key: &str, ship_id: i64) -> String {
+fn make_commands_request(player_key: &str, _ship_id: i64) -> String {
     // format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(0), mod_str(","), mod_int(ship_id), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(")"),mod_str(")"),mod_str(")"),mod_str(")"))
     // format!("{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(1), mod_str(","), mod_int(ship_id),mod_str(")"),mod_str(")"),mod_str(")"))
     format!(
@@ -93,7 +93,7 @@ fn mod_int(i: i64) -> String {
     let pad = "1".repeat(num_of_one);
     let pad2_length = if len % 4 == 0 { 0 } else { 4 - (len % 4) };
     let pad2 = "0".repeat(pad2_length);
-    return prefix.to_owned() + &pad + "0" + &pad2 + &num;
+    prefix.to_owned() + &pad + "0" + &pad2 + &num
 }
 
 /**
