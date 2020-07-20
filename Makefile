@@ -10,4 +10,4 @@ build:
 	./build.sh
 PHONY: test
 test:
-	cargo test
+	cargo test -- --nocapture
