@@ -161,6 +161,51 @@ fn mod_str(s: &str) -> &str {
     }
 }
 
+fn decode_response(s: &str) -> String {
+    if s == "" {
+        return "".to_owned();
+    }
+    let now = &s[0..2];
+    match now {
+        "11" => "(".to_owned() + &decode_response(&s[2..s.len() - 2]) + ")",
+        "10" | "01" => {
+            let (num, remain) = decode_int(&s);
+            num + &decode_response(remain)
+        }
+        "00" => "nil".to_owned() + &decode_response(&s[2..]),
+        _ => unimplemented!(),
+    }
+}
+
+fn decode_int(mut s: &str) -> (String, &str) {
+    dbg!(s);
+    let minus = match &s[0..2] {
+        "10" => true,
+        "01" => false,
+        _ => unimplemented!(),
+    };
+    s = &s[2..];
+    let mut count = 0;
+    loop {
+        match &s[count..count + 1] {
+            "0" => break,
+            "1" => {
+                count += 1;
+            }
+            _ => unimplemented!(),
+        }
+    }
+    s = &s[count + 1..];
+    let mut ans: i64 = 0;
+    let size = count * 4;
+    let num = &s[0..size];
+    for (i, c) in num.chars().rev().enumerate() {
+        ans += c.to_digit(10).unwrap() as i64 * 2_i64.pow(i as u32);
+    }
+    ans = if minus { -ans } else { ans };
+    (ans.to_string(), &s[size..])
+}
+
 async fn send(
     server_url: &str,
     body: String,
@@ -179,7 +224,11 @@ async fn send(
                 print!("Server response: ");
                 while let Some(chunk) = res.body_mut().data().await {
                     match chunk {
-                        Ok(content) => println!("{:?}", content),
+                        Ok(content) => {
+                            let st = &format!("{:?}", content);
+                            // debug出力(b"で始まり"で終わる)を迂回…
+                            println!("{:?}", decode_response(&st[2..st.len() - 1]))
+                        }
                         Err(why) => println!("error reading body: {:?}", why),
                     }
                 }
@@ -274,6 +323,13 @@ mod tests {
                 mod_str(")")
             ),
             "11011000101101111100010011100010000110000"
+        )
+    }
+    #[test]
+    fn decode_test() {
+        assert_eq!(
+            decode_response("1101100001110110000111110111100001000000001101011110111100010000000001101100001110111001000000001111011100001000011011101000000000111101101010110110101011011010101101101010000011110101111011100001000011011101000000000111111110110000111010111110100111101100011000011110100101111011010101101101010110110101011011010100011010110111001000000110110000100110000111111010110110000111110110011101110001100001111010010111101111000011011101011011000011101011011000010011010110111001000000110110000100110000000000"),
+            "(1(1((256(0((512(1(64nil((16(128nil((10(10(10(10nilnil((0((16(128nil((((1(0((-7-48((00((10(10(10(10nil(0(64(1nil(nilnil(((0(1((748((0))))))))))))))))))))))))))))))))))))))))))))))))".to_owned()
         )
     }
 }
