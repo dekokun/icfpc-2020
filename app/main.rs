@@ -31,6 +31,7 @@ async fn main() {
         .await
         .unwrap();
     loop {
+        println!("velocity_x:{} velocity_y:{}", velocity_x, velocity_y);
         let (_game_stage, _role, _ship_id, _position_x, _position_y, velocity_x2, velocity_y2) =
             send(
                 server_url,
@@ -235,18 +236,19 @@ fn decode_response2(s: &str) -> (i64, i64, i64, i64, i64, i64, i64) {
     // consume nill or
     let (mut s, is_not_nil) = consume_token(s, "(");
     if is_not_nil {
-        let (_static_x4_0, s2) = decode_int(s);
+        let (static_x4_0, s2) = decode_int(s);
         s = s2;
         s = expect_token(s, ",");
-        let (_static_x4_1, s2) = decode_int(s);
+        let (static_x4_1, s2) = decode_int(s);
         s = s2;
         s = expect_token(s, ",");
-        let (_static_x4_2, s2) = decode_int(s);
+        let (static_x4_2, s2) = decode_int(s);
         s = s2;
         s = expect_token(s, ",");
-        let (_static_x4_3, s2) = decode_int(s);
+        let (static_x4_3, s2) = decode_int(s);
         s = s2;
         s = expect_token(s, ")");
+        dbg!(static_x4_0, static_x4_1, static_x4_2, static_x4_3);
     } else {
         s = expect_token(s, "nil");
     }
