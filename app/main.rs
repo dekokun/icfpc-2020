@@ -39,8 +39,8 @@ async fn main() {
             )
             .await
             .unwrap();
-        let x_diff = velocity_x - velocity_x2;
-        let y_diff = velocity_y - velocity_y2;
+        let x_diff = velocity_x + velocity_x2;
+        let y_diff = velocity_y + velocity_y2;
         velocity_x = velocity_x2 - 2 * y_diff;
         velocity_y = velocity_y2 + 2 * x_diff;
         if game_stage == 2 {
