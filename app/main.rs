@@ -298,7 +298,7 @@ fn decode_response2(s: &str) -> (i64, i64, i64, i64, i64, i64, i64) {
         position_x,
         position_y
     );
-    dbg!(state_x1_0, state_x1_1, velocity_y, velocity_y);
+    dbg!(state_x1_0, state_x1_1, velocity_x, velocity_y);
     (
         game_stage, role, ship_id, position_x, position_y, velocity_x, velocity_y,
     )
