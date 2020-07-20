@@ -32,7 +32,7 @@ async fn main() {
         .unwrap();
     loop {
         println!("velocity_x:{} velocity_y:{}", velocity_x, velocity_y);
-        let (_game_stage, _role, _ship_id, _position_x, _position_y, velocity_x2, velocity_y2) =
+        let (game_stage, _role, _ship_id, _position_x, _position_y, velocity_x2, velocity_y2) =
             send(
                 server_url,
                 make_commands_request(player_key, ship_id, velocity_x, velocity_y),
@@ -43,6 +43,10 @@ async fn main() {
         let y_diff = -velocity_y - velocity_y2;
         velocity_x = velocity_x2 - y_diff;
         velocity_y = velocity_y2 + x_diff;
+        if game_stage == 2 {
+            println!("Finished !!!");
+            return
+        }
     }
 }
 
