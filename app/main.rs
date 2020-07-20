@@ -19,10 +19,17 @@ async fn main() {
     let x2: i64 = 0;
     let x3: i64 = 1;
     let _game_response = send(server_url, make_join_request(player_key)).await;
-    let (_game_stage, _role, ship_id, _position_x, _position_y, mut velocity_x, mut velocity_y) =
-        send(server_url, make_start_request(player_key, x0, x1, x2, x3))
-            .await
-            .unwrap();
+    let (
+        _game_stage,
+        _role,
+        ship_id,
+        mut before_position_x,
+        mut before_position_y,
+        mut velocity_x,
+        mut velocity_y,
+    ) = send(server_url, make_start_request(player_key, x0, x1, x2, x3))
+        .await
+        .unwrap();
     loop {
         let (_game_stage, _role, _ship_id, _position_x, _position_y, velocity_x2, velocity_y2) =
             send(
@@ -289,7 +296,7 @@ fn decode_response2(s: &str) -> (i64, i64, i64, i64, i64, i64, i64) {
         position_x,
         position_y
     );
-    dbg!(state_x1_0, state_x1_1,);
+    dbg!(state_x1_0, state_x1_1, velocity_y, velocity_y);
     (
         game_stage, role, ship_id, position_x, position_y, velocity_x, velocity_y,
     )
