@@ -176,6 +176,7 @@ fn mod_str(s: &str) -> &str {
     }
 }
 
+#[allow(dead_code)]
 fn decode_response(s: &str) -> String {
     dbg!(s);
     if s == "" {
@@ -195,7 +196,7 @@ fn decode_response(s: &str) -> String {
 
 fn decode_response2(s: &str) -> (i64, i64, i64, i64, i64, i64, i64) {
     let s = expect_token(s, "(");
-    let (one, s) = decode_int(s);
+    let (_one, s) = decode_int(s);
     let s = expect_token(s, ",");
     let (game_stage, s) = decode_int(s);
     let s = expect_token(s, ",");
@@ -225,16 +226,17 @@ fn decode_response2(s: &str) -> (i64, i64, i64, i64, i64, i64, i64) {
     // consume nill or
     let (mut s, is_not_nil) = consume_token(s, "(");
     if is_not_nil {
-        let (static_x4_0, s2) = decode_int(s);
+        let (_static_x4_0, s2) = decode_int(s);
         s = s2;
         s = expect_token(s, ",");
-        let (static_x4_1, s2) = decode_int(s);
+        let (_static_x4_1, s2) = decode_int(s);
         s = s2;
         s = expect_token(s, ",");
-        let (static_x4_2, s2) = decode_int(s);
+        let (_static_x4_2, s2) = decode_int(s);
         s = s2;
         s = expect_token(s, ",");
-        let (static_x4_3, s2) = decode_int(s);
+        let (_static_x4_3, s2) = decode_int(s);
+        s = s2;
         s = expect_token(s, ")");
     } else {
         s = expect_token(s, "nil");
@@ -243,7 +245,7 @@ fn decode_response2(s: &str) -> (i64, i64, i64, i64, i64, i64, i64) {
     let s = expect_token(s, ",");
     // gameState start
     // consume nill or
-    let (mut s, is_nil) = consume_token(s, "nil");
+    let (s, is_nil) = consume_token(s, "nil");
     if is_nil {
         return (game_stage, role, 0, 0, 0, 0, 0);
     }
@@ -308,6 +310,7 @@ fn expect_token<'a>(s: &'a str, token: &str) -> &'a str {
     &s[2..]
 }
 
+#[allow(dead_code)]
 fn expect_int(s: &str) {
     assert!(&s[..2] == "01" || &s[..2] == "10");
 }
@@ -474,7 +477,7 @@ mod tests {
     #[test]
     fn decode_response2_test() {
         assert_eq!(
-            decode_response2("110110000111011000011111011110000110000000110110000111110111100001110000001101100001110111001000000001111011100001000011011101000000000110000111101011110111000010000110111010000000001111111101100001110101111011100010000001110001100001111010010111101111000011011101011011000011101011011000010011010110111001000000110110000100110000111111010110110000111111011000100000101100011000011110100101111011000011101100010110110001111011001000011010110111001000000110110000100110000000000"), (1,1,0,0,0,0,0)
+            decode_response2("11011000011101100001111101111000011000000011011000011111011110000111000000110110000111011100100000000111101110000100001101110100000000011000011110110010011110111000010000110111010000000001111111101100001110101111011100001110001110001000101111101000101010011011110111100001101110001101100001110101101100001001101110000100001101110010000001101100001001111110101111011000010110000100000011111101011011000011111101100010000010110001001101111010011001001111011000011101100010110110001111011001000011010110111001000000110110000100110000000000"), (1,1,0,0,0,0,0)
         );
     }
     #[test]
