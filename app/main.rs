@@ -19,18 +19,20 @@ async fn main() {
     let x2: i64 = 0;
     let x3: i64 = 1;
     let _game_response = send(server_url, make_join_request(player_key)).await;
-    let (_game_stage, _role, ship_id, _position_x, _position_y, velocity_x, velocity_y) =
+    let (_game_stage, _role, ship_id, _position_x, _position_y, mut velocity_x, mut velocity_y) =
         send(server_url, make_start_request(player_key, x0, x1, x2, x3))
             .await
             .unwrap();
     loop {
-        let (_game_stage, _role, _ship_id, _position_x, _position_y, velocity_x, velocity_y) =
+        let (_game_stage, _role, _ship_id, _position_x, _position_y, velocity_x2, velocity_y2) =
             send(
                 server_url,
-                make_commands_request(player_key, ship_id, velocity_y, velocity_y),
+                make_commands_request(player_key, ship_id, velocity_x, velocity_y),
             )
             .await
             .unwrap();
+        velocity_x = velocity_x2;
+        velocity_y = velocity_y2;
     }
 }
 
