@@ -23,8 +23,8 @@ async fn main() {
         _game_stage,
         _role,
         ship_id,
-        mut before_position_x,
-        mut before_position_y,
+        _before_position_x,
+        _before_position_y,
         mut velocity_x,
         mut velocity_y,
     ) = send(server_url, make_start_request(player_key, x0, x1, x2, x3))
