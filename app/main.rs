@@ -162,6 +162,7 @@ fn mod_str(s: &str) -> &str {
 }
 
 fn decode_response(s: &str) -> String {
+    dbg!(s);
     if s == "" {
         return "".to_owned();
     }
@@ -178,7 +179,6 @@ fn decode_response(s: &str) -> String {
 }
 
 fn decode_int(mut s: &str) -> (String, &str) {
-    dbg!(s);
     let minus = match &s[0..2] {
         "10" => true,
         "01" => false,
