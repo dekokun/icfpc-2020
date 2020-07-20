@@ -1,8 +1,8 @@
 use http_body::Body as _;
 use hyper::{Body, Client, Method, Request, StatusCode};
+use rand::Rng;
 use std::env;
 use std::process;
-use rand::Rng;
 
 #[tokio::main]
 async fn main() {
@@ -27,22 +27,58 @@ async fn main() {
 }
 
 fn make_join_request(player_key: &str) -> String {
-    format!("{}{}{}{}{}{}{}", mod_str("("), mod_int(2), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("nil"), mod_str(")"))
+    format!(
+        "{}{}{}{}{}{}{}",
+        mod_str("("),
+        mod_int(2),
+        mod_str(","),
+        mod_int(player_key.parse().unwrap()),
+        mod_str(","),
+        mod_str("nil"),
+        mod_str(")")
+    )
 }
 
 fn make_start_request(player_key: &str, x0: i64, x1: i64, x2: i64, x3: i64) -> String {
-    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("), mod_int(x0), mod_str(","), mod_int(x1), mod_str(","), mod_int(x2), mod_str(","), mod_int(x3), mod_str(")"), mod_str(")"))
+    format!(
+        "{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}",
+        mod_str("("),
+        mod_int(3),
+        mod_str(","),
+        mod_int(player_key.parse().unwrap()),
+        mod_str(","),
+        mod_str("("),
+        mod_int(x0),
+        mod_str(","),
+        mod_int(x1),
+        mod_str(","),
+        mod_int(x2),
+        mod_str(","),
+        mod_int(x3),
+        mod_str(")"),
+        mod_str(")")
+    )
 }
 
 fn make_commands_request(player_key: &str, ship_id: i64) -> String {
     // format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(0), mod_str(","), mod_int(ship_id), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(")"),mod_str(")"),mod_str(")"),mod_str(")"))
-    format!("{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(1), mod_str(","), mod_int(ship_id),mod_str(")"),mod_str(")"),mod_str(")"))
+    // format!("{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(1), mod_str(","), mod_int(ship_id),mod_str(")"),mod_str(")"),mod_str(")"))
+    format!(
+        "{}{}{}{}{}{}{}{}",
+        mod_str("("),
+        mod_int(4),
+        mod_str(","),
+        mod_int(player_key.parse().unwrap()),
+        mod_str(","),
+        mod_str("("),
+        mod_str(")"),
+        mod_str(")")
+    )
 }
-
 
 fn mod_int(i: i64) -> String {
     if i == 0 {
-        return "010".to_owned()
+        return "010".to_owned();
     }
     let mut i = i;
     let prefix = if i < 0 {
@@ -55,20 +91,16 @@ fn mod_int(i: i64) -> String {
     let len = num.len();
     let num_of_one = ((len - 1) / 4) + 1;
     let pad = "1".repeat(num_of_one);
-    let pad2_length = if len % 4 == 0 {
-        0
-    } else {
-        4 - (len % 4)
-    };
-    let pad2 = "0".repeat( pad2_length );
-    return prefix.to_owned() + &pad + "0" + &pad2 + &num
+    let pad2_length = if len % 4 == 0 { 0 } else { 4 - (len % 4) };
+    let pad2 = "0".repeat(pad2_length);
+    return prefix.to_owned() + &pad + "0" + &pad2 + &num;
 }
 
 /**
- * term    = num
-           | "(" term ")"
-           | term "," term
- */
+* term    = num
+          | "(" term ")"
+          | term "," term
+*/
 fn mod_str(s: &str) -> &str {
     // let nil = "".to_owned();
     // let ret = "".to_owned();
@@ -97,7 +129,6 @@ fn mod_str(s: &str) -> &str {
     //         '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0' => {
     //             num += c;
     //         }
-
 
     //     }
     // }
@@ -187,10 +218,42 @@ mod tests {
     }
     #[test]
     fn start() {
-        assert_eq!(format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(3), mod_str(","), mod_int("10000".parse().unwrap()), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(","), mod_int(1), mod_str(")"), mod_str(")")), "110110001111011111000100111000100001111011000011101100001110110000111011000010000")
+        assert_eq!(
+            format!(
+                "{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}",
+                mod_str("("),
+                mod_int(3),
+                mod_str(","),
+                mod_int("10000".parse().unwrap()),
+                mod_str(","),
+                mod_str("("),
+                mod_int(1),
+                mod_str(","),
+                mod_int(1),
+                mod_str(","),
+                mod_int(1),
+                mod_str(","),
+                mod_int(1),
+                mod_str(")"),
+                mod_str(")")
+            ),
+            "110110001111011111000100111000100001111011000011101100001110110000111011000010000"
+        )
     }
     #[test]
     fn join() {
-        assert_eq!(format!("{}{}{}{}{}{}{}", mod_str("("), mod_int(2), mod_str(","), mod_int("10000".parse().unwrap()), mod_str(","), mod_str("nil"), mod_str(")")), "11011000101101111100010011100010000110000")
+        assert_eq!(
+            format!(
+                "{}{}{}{}{}{}{}",
+                mod_str("("),
+                mod_int(2),
+                mod_str(","),
+                mod_int("10000".parse().unwrap()),
+                mod_str(","),
+                mod_str("nil"),
+                mod_str(")")
+            ),
+            "11011000101101111100010011100010000110000"
+        )
     }
 }
