@@ -60,20 +60,39 @@ fn make_start_request(player_key: &str, x0: i64, x1: i64, x2: i64, x3: i64) -> S
     )
 }
 
-fn make_commands_request(player_key: &str, _ship_id: i64) -> String {
-    // format!("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(0), mod_str(","), mod_int(ship_id), mod_str(","), mod_str("("), mod_int(1), mod_str(","), mod_int(1), mod_str(")"),mod_str(")"),mod_str(")"),mod_str(")"))
-    // format!("{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(1), mod_str(","), mod_int(ship_id),mod_str(")"),mod_str(")"),mod_str(")"))
+fn make_commands_request(player_key: &str, ship_id: i64) -> String {
     format!(
-        "{}{}{}{}{}{}{}{}",
+        "{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}",
         mod_str("("),
         mod_int(4),
         mod_str(","),
         mod_int(player_key.parse().unwrap()),
         mod_str(","),
         mod_str("("),
+        mod_str("("),
+        mod_int(0),
+        mod_str(","),
+        mod_int(ship_id),
+        mod_str(","),
+        mod_str("cons"),
+        mod_int(1),
+        mod_int(1),
+        mod_str(")"),
         mod_str(")"),
         mod_str(")")
     )
+    // format!("{}{}{}{}{}{}{}{}{}{}{}{}{}", mod_str("("), mod_int(4), mod_str(","), mod_int(player_key.parse().unwrap()), mod_str(","), mod_str("("),mod_str("("), mod_int(1), mod_str(","), mod_int(ship_id),mod_str(")"),mod_str(")"),mod_str(")"))
+    // format!(
+    //     "{}{}{}{}{}{}{}{}",
+    //     mod_str("("),
+    //     mod_int(4),
+    //     mod_str(","),
+    //     mod_int(player_key.parse().unwrap()),
+    //     mod_str(","),
+    //     mod_str("("),
+    //     mod_str(")"),
+    //     mod_str(")")
+    // )
 }
 
 fn mod_int(i: i64) -> String {
@@ -136,6 +155,7 @@ fn mod_str(s: &str) -> &str {
         "(" => "11",
         ")" => "00",
         "nil" => "00",
+        "cons" => "11",
         "," => "11",
         _ => unreachable!(),
     }
